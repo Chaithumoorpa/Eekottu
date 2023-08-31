@@ -1,0 +1,250 @@
+{% extends 'Eekottu/base.html'%}
+{% load static %}
+
+
+{% block title %}Welcome to Eekottu{% endblock title %}
+{% load humanize %}
+
+{% block container %}
+
+
+
+
+    <section class="py-5 mb-5" style="background: url({% static '/assets/images/background-pattern.jpg'%});">
+      <div class="container-fluid">
+        <div class="d-flex justify-content-between">
+          <h1 class="page-title pb-2">Shop</h1>
+          <nav class="breadcrumb fs-6">
+            <a class="breadcrumb-item nav-link" href="{% url 'Shop:index' %}">Home</a>
+            <a class="breadcrumb-item nav-link" href="{% url 'Shop:shop' category.name %}">{{category.name}}</a>
+            <span class="breadcrumb-item active" aria-current="page">Shop</span>
+          </nav>
+        </div>
+      </div>
+    </section>
+
+    <div class="shopify-grid">
+      <div class="container-fluid">
+        <div class="row">
+          <aside class="col-md-3">
+            <div class="sidebar">
+              <div class="widget-menu">
+                <div class="widget-search-bar pe-5">
+                  <form role="search" method="get" class="d-flex">
+                    
+                      <input class="form-control form-control-lg rounded-start rounded-0 bg-light" type="email" placeholder="What are you looking for?" aria-label="What are you looking for?">
+                      <button class="btn btn-dark rounded-end rounded-0" type="submit">Search</button>
+                    </form>
+                  
+                </div> 
+              </div>
+              <div class="widget-product-categories pt-5">
+                <h5 class="widget-title">Categories</h5>
+                <ul class="product-categories sidebar-list list-unstyled">
+                  <li class="cat-item">
+                    <a href="">All</a>
+                  </li>
+                  {% for subcategory in subcategories %}
+                  <li class="cat-item">
+                    <a href="#" class="nav-link">{{subcategory.name}}</a>
+                  </li>
+                  {%endfor%}
+                </ul>
+              </div>
+              <div class="widget-product-tags pt-3">
+                <h5 class="widget-title">Tags</h5>
+                <ul class="product-tags sidebar-list list-unstyled">
+                  {% for product in products %}
+                  <li class="tags-item">
+                    <a href="#" class="nav-link">{{product.generic_name}}</a>
+                  </li>
+                  {%endfor%}
+                </ul>
+              </div>
+              <div class="widget-product-brands pt-3">
+                <h5 class="widget-title">Brands</h5>
+                <ul class="product-tags sidebar-list list-unstyled">
+                  {% for product in products %}
+                  <li class="tags-item">
+                    <a href="#" class="nav-link">{{product.brand}}</a>
+                  </li>
+                  {%endfor%}
+                </ul>
+              </div>
+              <div class="widget-price-filter pt-3">
+                <h5 class="widget-titlewidget-title">Filter By Price</h5>
+                <ul class="product-tags sidebar-list list-unstyled">
+                  <li class="tags-item">
+                    <a href="#" class="nav-link">Less than $10</a>
+                  </li>
+                  
+                </ul>
+              </div>
+            </div>
+          </aside>
+
+          <main class="col-md-9">
+            <div class="filter-shop d-flex justify-content-between">
+              <div class="showing-product">
+                <p>Showing {{ products.start_index }}–{{ products.end_index }} of {{ products.paginator.count }} results</p>
+              </div>
+              
+              
+              <div class="sort-by">
+                <select id="input-sort" class="form-control" data-filter-sort="" data-filter-order="">
+                  <option value="">Default sorting</option>
+                  <option value="">Name (A - Z)</option>
+                  <option value="">Name (Z - A)</option>
+                  <option value="">Price (Low-High)</option>
+                  <option value="">Price (High-Low)</option>
+                  <option value="">Rating (Highest)</option>
+                  <option value="">Rating (Lowest)</option>
+                  <option value="">Model (A - Z)</option>
+                  <option value="">Model (Z - A)</option>   
+                </select>
+              </div>
+            </div>
+            
+            <div class="product-grid row row-cols-sm-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4">
+
+              {% for product in products %}
+              <div class="col">
+                <div class="product-item">
+                  {% if product.id in wishlist_products %}
+                  <a href="" class="btn-wishlist" id="wishlist-button-{{ product.id }}"><svg width="24" height="24"><use xlink:href="#remove"></use></svg></a>
+                  {%else%}
+                  <a href="" class="btn-wishlist" id="wishlist-button-{{ product.id }}"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></a>
+                  {%endif%}
+                  <figure>
+                    <a href="{% url 'Shop:product' product.category.name product.sub_category.name product.pid %}" title="Product Title">
+                      <img src="{{ product.image.url }}" class="tab-image" alt="{{product.name}}">
+                    </a>
+                  </figure>
+                  <h3>{{product.name|slice:"0:30" }}...</h3>
+                  <span class="qty">{{product.net_quantity}}</span><span class="rating"><svg width="24" height="24" class="text-primary"><use xlink:href="#star-solid"></use></svg> {{product.ratings}}</span>
+                  <span class="price">{{ product.price|intcomma }}</span>
+                  <div class="d-flex align-items-center justify-content-between">
+
+
+                  <form method="POST" action="">
+                      {% csrf_token %}
+
+                    {% if product.inventory.stock <= 0 %}
+                    <p>out of Stock </p>
+
+
+                    {% elif product.inventory.stock < 10 %}
+                    
+                    <div class="input-group product-qty">
+                        <span>Only {{ product.inventory.stock }} left in stock</span>
+                        <span class="input-group-btn">
+                            <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus" data-field="">
+                              <svg width="16" height="16"><use xlink:href="#minus"></use></svg>
+                            </button>
+                        </span>
+                        
+                        
+                       
+                        <input type="text" id="quantity" name="quantity" class="form-control input-number" value="0" min="1" max="10">
+                        
+                        
+                       
+
+
+                        <span class="input-group-btn">
+                            <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus" data-field="">
+                                <svg width="16" height="16"><use xlink:href="#plus"></use></svg>
+                            </button>
+                        </span>
+                    </div>
+                    <button class="nav-link">Add to Cart <svg width="24" height="24"><use xlink:href="#cart"></use></svg></button>
+
+
+
+                    {%else%}
+
+
+                    <div class="input-group product-qty">
+                      <span class="input-group-btn">
+                          <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus" data-field="">
+                            <svg width="16" height="16"><use xlink:href="#minus"></use></svg>
+                          </button>
+                      </span>
+                      
+                      
+                        <input type="text" id="quantity" name="quantity" class="form-control input-number" value="0" min="1" max="10">
+                        
+                      
+                      {% comment %} <input type="text" id="quantity" name="quantity" class="form-control input-number" value="0" min="1" max="{{ product.inventory.stock }}"> {% endcomment %}
+
+                      <span class="input-group-btn">
+                          <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus" data-field="">
+                              <svg width="16" height="16"><use xlink:href="#plus"></use></svg>
+                          </button>
+                      </span>
+                    </div>
+                  
+                    <button class="nav-link" type='submit'>Add to Cart <svg width="24" height="24"><use xlink:href="#cart"></use></svg></button>
+                    {% endif %}
+                  </form> 
+                  </div>
+                </div>
+              </div>
+              {%endfor %}
+  
+
+            </div>
+            <!-- / product-grid -->
+
+            
+<!-- Display the pagination -->
+      <nav class="navigation paging-navigation text-center padding-medium" role="navigation">
+        <div class="pagination loop-pagination d-flex justify-content-center align-items-center">
+          {% if products.has_previous %}
+            <a href="?page=1">
+              <svg class="chevron-left pe-3">
+                <use xlink:href="#chevron-left"></use>
+              </svg>
+            </a>
+          {% endif %}
+
+          {% for page_num in products.paginator.page_range %}
+            {% if products.number == page_num %}
+              <span aria-current="page" class="page-numbers current pe-3">{{ page_num }}</span>
+            {% else %}
+              <a class="page-numbers pe-3" href="?page={{ page_num }}">{{ page_num }}</a>
+            {% endif %}
+          {% endfor %}
+
+          {% if products.has_next %}
+            <a href="?page={{ products.paginator.num_pages }}">
+              <svg class="chevron-right ps-3">
+                <use xlink:href="#chevron-right"></use>
+              </svg>
+            </a>
+          {% endif %}
+        </div>
+      </nav>
+
+          </main>
+          
+        </div>
+      </div>
+    </div>
+
+
+
+  
+  
+  
+  
+
+    
+{% endblock %}
+
+
+
+
+
+
+

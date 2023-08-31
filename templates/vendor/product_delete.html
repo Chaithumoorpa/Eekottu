@@ -1,0 +1,15 @@
+{% extends 'userauth/base.html'%}
+{% load static %}
+
+{% block title %}Product Add{% endblock title %}
+
+{% block login_signup %}
+
+<h3>Delete Product</h3>
+<p>Are you sure you want to delete the product "{{ product.name }}"?</p>
+<form method="post">
+  {% csrf_token %}
+  <button type="submit" class="btn btn-danger">Delete</button>
+</form>
+
+{%endblock%}

@@ -1,0 +1,23 @@
+{% extends 'userauth/base.html'%}
+{% load static %}
+
+{% block title %}Error{% endblock title %}
+
+{% block login_signup %}
+
+
+<div class="bg-secondary py-5 my-5 rounded-5" style="background: url({% static '/assets/images/background-pattern.jpg'%}) no-repeat;">
+    <div class="container my-5">
+      <div class="row">
+        <div class="col-md-12 p-5">
+            <div class="section-header">
+                <h2 class="section-title display-4">Something Went Wrong</h2>
+            </div>
+        </div>
+            
+    </div>
+    
+  </div>
+</div>
+
+{% endblock login_signup%}

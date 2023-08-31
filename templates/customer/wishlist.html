@@ -1,0 +1,22 @@
+{% extends 'Eekottu/base.html'%}
+{% load static %}
+
+
+{% block title %}Welcome to Eekottu{% endblock title %}
+
+
+{% block container %}
+
+<h1>Wishlist</h1>
+{% if products %}
+  <ul>
+    {% for product in products %}
+      <li>{{ product.name }}</li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>Your wishlist is empty.</p>
+{% endif %}
+
+
+{% endblock %}

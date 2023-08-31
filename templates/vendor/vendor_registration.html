@@ -1,0 +1,55 @@
+{% extends 'authentication/base.html'%}
+{% load static %}
+
+{% block title %}Vendor Registration{% endblock title %}
+
+{% block login_signup %}
+
+
+
+ <section class="py-5" style="background-image: url('static/assets/images/background-pattern.jpg');background-repeat: no-repeat;background-size: cover;">
+    <div class="container-fluid">
+
+      <div class="bg-secondary py-5 my-5 rounded-5" style="background: url('static/assets/images/bg-leaves-img-pattern.png') no-repeat;">
+        <div class="container my-5">
+          <div class="row">
+            <div class="col-md-6 p-5">
+              <div class="section-header">
+                <h2 class="section-title display-4">Vendor Registration</h2>
+              </div>
+              <p>Explore the more and give the more merchedise</p>
+              {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissable fade show" role='alert'>
+                      <strong>{{message}}</strong>
+                      <button type ="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                      </div>
+              {% endfor %}
+            </div>
+            <div class="col-md-6 p-5">
+              <form method="POST" action="{% url 'Vendor:vendor_registration' %}">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    {{ form.as_p }}
+                </div>
+                <div class="d-grid gap-2">
+                  <button type="submit" class="btn btn-dark btn-lg">Register</button>
+                </div>
+              </form>
+              <div class="mb-3">
+                Already a User? click here to <a href = "{% url 'authentication:user_login'%}"> login </a>
+              </div>
+              
+            </div>
+            
+          </div>
+          
+        </div>
+      </div>
+      
+    </div>
+  </section>
+
+{% endblock login_signup %}
+
+

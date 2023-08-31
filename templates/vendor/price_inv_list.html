@@ -1,0 +1,26 @@
+{% extends 'authentication/base.html' %}
+
+
+{% block dashboard %}
+  
+  <table>
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>MRP Price</th>
+        <th>Stock</th>
+        <th>Update</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for product in products %}
+      <tr>
+        <td>{{ product.name }}</td>
+        <td>{{ product.pricing.mrp_price }}</td>
+        <td>{{ product.inventory.stock }}</td>
+        <td><a href="{% url 'Vendor:update_prod-price-inv_info' product.id %}">Update</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends 'userauth/base.html'%}
+{% load static %}
+
+{% block title %}Vendor registation - step three - Seller Information {% endblock title %}
+
+{% block login_signup %}
+
+
+ <section class="py-5" style="background-image: url({% static '/assets/images/background-pattern.jpg'%}) ;background-repeat: no-repeat;background-size: cover;">
+    <div class="container-fluid">
+
+      <div class="bg-secondary py-5 my-5 rounded-5" style="background: url({% static '/assets/images/bg-leaves-img-pattern.png'%}) no-repeat;">
+        <div class="container my-5">
+          <div class="row">
+            <div class="col-md-6 p-5">
+              <div class="section-header">
+                <h2 class="section-title display-4">Step Three: Terms and Conditions</h2>
+              </div>
+            </div>
+            <div class="col-md-6 p-5">
+              <div class="iframe-container">
+                <iframe srcdoc='
+                    <h2>Terms and Conditions for Vendor Registration on Eekottu</h2>
+                    <p>
+                        Effective Date: [Insert Effective Date]<br>
+                        Please read these Terms and Conditions ("Agreement") carefully before registering as a vendor on Eekottu ("Website"). This Agreement sets forth the legally binding terms and conditions for your participation as a vendor on the Website.
+                    </p>
+                    <!-- Add the rest of the terms and conditions here -->
+                    <!-- ... -->
+                    <p>
+                        By registering as a vendor on Eekottu, you acknowledge that you have read, understood, and agree to be bound by the terms and conditions outlined in this Agreement.
+                    </p>
+                    <div class="attachments">
+                        <p>Attachments:</p>
+                        <p>- Legal Terms and Conditions Note: [Attach the legal terms and conditions note, if provided separately.]</p>
+                    </div>
+                    <p>
+                        If you have any questions or concerns regarding these Terms and Conditions, please contact us at [Insert Contact Information].
+                    </p>
+                    <p>
+                        Please note that this is a template and should be reviewed by a legal professional to ensure compliance with your jurisdiction and specific requirements.
+                    </p>'
+                    style="width: 100%; height: 300px; border: none;"
+                ></iframe>
+            </div>
+                <form method="post">
+                  {% csrf_token %}
+                  
+                  <div class="form-check">
+                    
+                    <label class="form-check-label" for="terms_check">I agree to the terms and conditions</label>
+                    {{  form.terms_accepted }}
+                  </div>
+                  
+                  <button type="submit" class="btn btn-dark btn-lg">Submit</button>
+                </form>
+              </div>
+            
+            </div>
+            
+          </div>
+        </div>
+        
+      </div>
+    </section>
+  
+{% endblock login_signup %}
+

@@ -1,0 +1,61 @@
+{% extends 'userauth/base.html'%}
+{% load static %}
+
+{% block title %}Product Add{% endblock title %}
+
+{% block login_signup %}
+
+
+ <section class="py-5" style="background-image: url({% static '/assets/images/background-pattern.jpg'%});background-repeat: no-repeat;background-size: cover;">
+    <div class="container-fluid">
+
+      <div class="bg-secondary py-5 my-5 rounded-5" style="background: url({% static '/assets/images/bg-leaves-img-pattern.png'%}) no-repeat;">
+        <div class="container my-5">
+          <div class="row">
+            <div class="col-md-6 p-5">
+              <div class="section-header">
+                <h2 class="section-title display-4">Add Product</h2>
+              </div>
+              <form id="productForm" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <!-- Product details fields -->
+                {{ product_form.as_p }}
+                
+                
+                <div id="imageContainer">
+                  {% for image in form.images %}
+                  <div class="imageRow" data-image-id="{{ image.id }}">
+                      <input type="file" name="images[]" accept="image/*" class="imageInput">
+                      <button type="button" class="removeImageBtn" data-image-id="{{ image.id }}">-</button>
+                  </div>
+                  {% endfor %}
+              </div>
+              
+              <!-- Add more images button -->
+              <button type="button" id="addImageButton">Add more images</button>
+              
+                <!-- Image fields container -->
+                
+                <button type="submit" class="btn btn-primary">Save Product</button>
+              </form>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+      
+    </div>
+  </section>
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock login_signup%}

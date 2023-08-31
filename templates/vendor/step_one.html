@@ -1,0 +1,37 @@
+{% extends 'userauth/base.html'%}
+{% load static %}
+
+{% block title %}Vendor registation - step one - Vendor Details{% endblock title %}
+
+{% block login_signup %}
+
+
+ <section class="py-5" style="background-image: url({% static '/assets/images/background-pattern.jpg'%});background-repeat: no-repeat;background-size: cover;">
+    <div class="container-fluid">
+
+      <div class="bg-secondary py-5 my-5 rounded-5" style="background: url({% static '/assets/images/bg-leaves-img-pattern.png'%}) no-repeat;">
+        <div class="container my-5">
+          <div class="row">
+            <div class="col-md-6 p-5">
+              <div class="section-header">
+                <h2 class="section-title display-4">Step One: Vendor Details</h2>
+              </div>
+            </div>
+            <div class="col-md-6 p-5">
+                <form method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  {{ form.as_p }}
+                  <button type="submit" class="btn btn-dark btn-lg">Next</button>
+                </form>
+              </div>
+            
+            </div>
+            
+          </div>
+        </div>
+        
+      </div>
+    </section>
+  
+{% endblock login_signup %}
+

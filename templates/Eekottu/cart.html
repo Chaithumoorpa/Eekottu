@@ -1,0 +1,143 @@
+{% extends 'Eekottu/base.html'%}
+{% load static %}
+
+
+{% block title %}Welcome to Eekottu{% endblock title %}
+{%load humanize%}
+
+{% block container %}
+
+
+    <section class="py-5 mb-5" style="background: url(images/background-pattern.jpg);">
+      <div class="container-fluid">
+        <div class="d-flex justify-content-between">
+          <h1 class="page-title pb-2">Cart</h1>
+          <nav class="breadcrumb fs-6">
+            <a class="breadcrumb-item nav-link" href="#">Home</a>
+            <a class="breadcrumb-item nav-link" href="#">{{user.username}}'s</a>
+            <span class="breadcrumb-item active" aria-current="page">Cart</span>
+          </nav>
+        </div>
+      </div>
+    </section>
+
+    <section class="shopify-cart padding-large">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-8">
+            <div class="cart-table">
+              <div class="cart-header">
+                <div class="row d-flex">
+                  <h6 class="cart-title text-uppercase text-muted col-lg-4 pb-3">Product</h6>
+                  <h6 class="cart-title text-uppercase text-muted col-lg-3 pb-3">Quantity</h6>
+                  <h6 class="cart-title text-uppercase text-muted col-lg-4 pb-3">Subtotal</h6>
+                </div>
+              </div>
+              {% for cart_item in cart_items %}
+              <div class="cart-item border-top border-bottom">
+                <div class="row align-items-center"> 
+                  <div class="col-lg-4 col-md-3">
+                    <div class="cart-info d-flex flex-wrap align-items-center mb-4">
+                      <div class="col-lg-5">
+                        <div class="card-image">
+                          <img src="{{ cart_item.product.image.url }}" alt="cloth" class="img-fluid">
+                        </div>
+                      </div>
+                      <div class="col-lg-7">
+                        <div class="card-detail ps-3">
+                          <h5 class="card-title">
+                            <a href="#" class="text-decoration-none">{{cart_item.product}}</a>
+                          </h5>
+                          <div class="card-price">
+                            <span class="money text-dark" data-currency-inr="{{cart_item.product.price}}">₹ {{cart_item.product.price|intcomma}}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-6 col-md-7">
+                    <div class="row d-flex">
+                      <div class="col-md-4">
+                        <div class="input-group product-qty">
+                          <span class="input-group-btn">
+                              <button type="button" class="quantity-left-minus btn btn-light btn-number" data-type="minus" data-field="">
+                                <svg width="16" height="16"><use xlink:href="#minus"></use></svg>
+                              </button>
+                          </span>
+                          <input type="text" id="quantity" name="quantity" class="form-control input-number text-center" value="{{cart_item.quantity}}" min="1" max="100">
+                          <span class="input-group-btn">
+                              <button type="button" class="quantity-right-plus btn btn-light btn-number" data-type="plus" data-field="">
+                                  <svg width="16" height="16"><use xlink:href="#plus"></use></svg>
+                              </button>
+                          </span>
+                        </div>
+                      </div>
+                      <div class="col-md-8 text-center">
+                        <div class="total-price">
+                          <span class="money text-dark">₹ {{cart_item.product.price|intcomma}}</span>
+                        </div>
+                      </div>   
+                    </div>             
+                  </div>
+                  <div class="col-lg-1 col-md-2">
+                    <div class="cart-remove">
+                      <a href="{% url 'Customer:remove_from_cart' cart_item.product.pk %}">
+                        <svg width="32px">
+                          <use xlink:href="#trash"></use>
+                        </svg>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% empty %}
+              <p>Your cart is empty.</p>
+              {% endfor %}
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="cart-totals bg-grey padding-medium">
+              <h4 class="text-dark pb-4">Cart Total</h4>
+              <div class="total-price pb-5">
+                <table cellspacing="0" class="table text-uppercase">
+                  <tbody>
+                    <tr class="subtotal pt-2 pb-2 border-top border-bottom">
+                      <th>Subtotal</th>
+                      <td data-title="Subtotal">
+                        <span class="price-amount amount text-dark ps-5">
+                          <bdi>
+                            <span class="price-currency-symbol">₹</span>{{ total_price|intcomma }}
+                          </bdi>
+                        </span>
+                      </td>
+                    </tr>
+                    <tr class="order-total pt-2 pb-2 border-bottom">
+                      <th>Total</th>
+                      <td data-title="Total">
+                        <span class="price-amount amount text-dark ps-5">
+                          <bdi>
+                            <span class="price-currency-symbol">₹</span>{{ total_price|intcomma }}
+                          </bdi>
+                        </span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="button-wrap row g-2">
+                <div class="col-md-6"><button class="btn btn-dark btn-lg text-uppercase btn-rounded-none w-100">Update Cart</button></div>
+                <div class="col-md-6"><button class="btn btn-dark btn-lg text-uppercase btn-rounded-none w-100">Continue Shopping</button></div>
+                <div class="col-md-12"><button class="btn btn-primary btn-lg text-uppercase btn-rounded-none w-100"><a href="{% url 'Eekottu:checkout' %}?total_price={{ total_price }}">Proceed to checkout</a></button></div>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </section> 
+    
+
+    
+
+  
+    {% endblock %}

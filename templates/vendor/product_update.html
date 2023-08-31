@@ -1,0 +1,73 @@
+{% extends 'userauth/base.html'%}
+{% load static %}
+
+{% block title %}Product Add{% endblock title %}
+
+{% block login_signup %}
+
+
+ <section class="py-5" style="background-image: url({% static '/assets/images/background-pattern.jpg'%});background-repeat: no-repeat;background-size: cover;">
+    <div class="container-fluid">
+
+      <div class="bg-secondary py-5 my-5 rounded-5" style="background: url({% static '/assets/images/bg-leaves-img-pattern.png'%}) no-repeat;">
+        <div class="container my-5">
+          <div class="row">
+            <div class="col-md-6 p-5">
+              <div class="section-header">
+                <h2 class="section-title display-4">Procut Update</h2>
+              </div>
+              <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ product_form.as_p }}
+
+
+                <div id="imageContainer">
+                  {% for image in existing_images %}
+                  <div class="existing-image">
+                    <img src="{{ image.images.url }}" alt="Product Image" width="150px" height="150px">
+                    <input type="checkbox" name="clear_image_{{ image.id }}" id="clearImage{{ image.id }}">
+                    <label for="clearImage{{ image.id }}">Clear</label>
+                    
+                  </div>
+                  {% endfor %}
+                </div>
+
+
+
+
+                <div id="imageContainer">
+                  {% for image in form.images %}
+                  <div class="imageRow" data-image-id="{{ image.id }}">
+                      <input type="file" name="images[]" accept="image/*" class="imageInput">
+                      <button type="button" class="removeImageBtn" data-image-id="{{ image.id }}">-</button>
+                  </div>
+                  {% endfor %}
+              </div>
+
+                
+
+                
+                <button type="button" id="addImageButton">Add another image</button>
+              
+                <!-- Image fields container -->
+                
+                <!-- Submit button -->
+                <button type="submit" class="btn btn-primary">Update</button>
+              </form>
+              
+              
+              
+              
+            </div>
+          </div>
+          
+        </div>
+      </div>
+      
+    </div>
+  </section>
+
+
+
+
+{% endblock%}
